@@ -77,9 +77,6 @@ const SignIn = () => {
               <Link href="sign-up" className="text-secondary">
                 Sign up
               </Link>
-              <Link href="home" className="text-secondary">
-                home
-              </Link>
             </View>
           </View>
         </View>

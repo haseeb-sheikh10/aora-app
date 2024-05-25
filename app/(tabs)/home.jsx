@@ -1,24 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FlatList, Image, RefreshControl, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import CustomInput from "../../components/CustomInput";
 import EmptyState from "../../components/EmptyState";
+import SearchInput from "../../components/SearchInput";
 import Trending from "../../components/Trending";
-import { icons, images } from "../../constants";
+import VideoCard from "../../components/VideoCard";
+import { images } from "../../constants";
 import { useGlobalContext } from "../../context/global";
-import { getAllPosts } from "../../lib/appwrite/posts";
 import useAppwrite from "../../hooks/useAppwrite";
+import { getAllPosts, getTrendingPosts } from "../../lib/appwrite/posts";
 
 const Home = () => {
-  const [search, setSearch] = useState("");
   const { user } = useGlobalContext();
+
+  const { data: posts, refetch: postsRefetch } = useAppwrite(getAllPosts);
+  const { data: trendingPosts, refetch: trendingPostsRefetch } =
+    useAppwrite(getTrendingPosts);
+
   const [refreshing, setRefreshing] = useState(false);
-
-  const { data: posts, refetch, isLoading } = useAppwrite(getAllPosts);
-
   const onRefresh = async () => {
     setRefreshing(true);
-    await refetch;
+    await postsRefetch();
+    await trendingPostsRefetch();
     setRefreshing(false);
   };
 
@@ -28,9 +31,7 @@ const Home = () => {
         data={posts ?? []}
         keyExtractor={(item) => item.$id}
         renderItem={({ item }) => (
-          <View className="px-4">
-            <Text className="text-white text-lg">{item.title}</Text>
-          </View>
+          <VideoCard video={item} refreshing={refreshing} />
         )}
         ListHeaderComponent={() => (
           <View className="px-4 py-8">
@@ -49,18 +50,12 @@ const Home = () => {
                 resizeMode="contain"
               />
             </View>
-            <CustomInput
-              value={search}
-              onChange={(val) => setSearch(val)}
-              placeholder={"Search for a video topic"}
-              icon={icons.search}
-              otherStyles="mt-5"
-            />
+            <SearchInput />
 
             <View className="mt-7">
               <Text className="text-gray-100 font-plight">Trending Videos</Text>
 
-              <Trending posts={[{ id: 1 }, { id: 2 }, { id: 3 }] ?? []} />
+              <Trending posts={trendingPosts ?? []} refreshing={refreshing} />
             </View>
           </View>
         )}

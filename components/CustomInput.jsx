@@ -1,6 +1,14 @@
 import React, { useState } from "react";
-import { Image, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Image,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { icons } from "../constants";
+import { router, usePathname } from "expo-router";
 
 const CustomInput = ({
   label = "",
@@ -33,11 +41,6 @@ const CustomInput = ({
               source={!showPass ? icons.eye : icons.eyeHide}
               className="w-4 h-4"
             />
-          </TouchableOpacity>
-        )}
-        {icon !== "" && (
-          <TouchableOpacity>
-            <Image source={icon} className="w-4 h-4" />
           </TouchableOpacity>
         )}
       </View>
