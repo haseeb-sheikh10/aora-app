@@ -9,6 +9,7 @@ import { images } from "../../constants";
 import { useGlobalContext } from "../../context/global";
 import useAppwrite from "../../hooks/useAppwrite";
 import { getAllPosts, getTrendingPosts } from "../../lib/appwrite/posts";
+import { router } from "expo-router";
 
 const Home = () => {
   const { user } = useGlobalContext();
@@ -63,6 +64,7 @@ const Home = () => {
           <EmptyState
             title={"No Videos Found"}
             subtitle={"Be the first one to upload a video"}
+            onPress={() => router.push("create")}
           />
         )}
         refreshControl={

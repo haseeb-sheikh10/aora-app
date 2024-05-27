@@ -113,6 +113,7 @@ const Profile = () => {
           <EmptyState
             title={"No Videos Found"}
             subtitle={"No videos found for this profile"}
+            onPress={() => router.push("create")}
           />
         )}
         refreshControl={

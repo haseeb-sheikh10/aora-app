@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import {
@@ -65,6 +65,7 @@ const Search = () => {
           <EmptyState
             title={"No Videos Found"}
             subtitle={"No videos found for this search query"}
+            onPress={() => router.push("create")}
           />
         )}
         refreshControl={
